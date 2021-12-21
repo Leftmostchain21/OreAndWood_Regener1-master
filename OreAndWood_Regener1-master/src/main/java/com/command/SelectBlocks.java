@@ -14,8 +14,7 @@ public class SelectBlocks extends Command{
         super("oawrselector");
         this.setDescription("Select blocks for the regener in the Ore&WoodRegener Plugin");
         commandParameters.put("default", new CommandParameter[]{
-                new CommandParameter("remove", CommandParamType.STRING, false),
-                new CommandParameter("add", CommandParamType.STRING, false)
+                new CommandParameter("remove/add", CommandParamType.STRING, false),
         });
     }
 
@@ -23,11 +22,12 @@ public class SelectBlocks extends Command{
 
     @Override
     public boolean execute(CommandSender commandSender, String s, String[] strings) {
-        commandSender.sendMessage("Your parameter is: " + strings[0]);
         if (strings[0].equals("add")) {
+            commandSender.sendMessage("To stop this command, crouch!");
             runningCommand_oawrselector.put(commandSender.getName().toString(), "add");
             return false;
         } if (strings[0].equals("remove")){
+            commandSender.sendMessage("To stop this command, crouch!");
             runningCommand_oawrselector.put(commandSender.getName().toString(), "remove");
         } else {
             commandSender.sendMessage(TextFormat.RED + "The parameter: " + TextFormat.DARK_RED + strings[0] + TextFormat.RED + " is not a valid argument!");

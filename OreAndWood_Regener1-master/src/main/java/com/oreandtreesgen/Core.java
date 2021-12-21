@@ -11,8 +11,13 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Core extends PluginBase {
 
@@ -26,27 +31,12 @@ public class Core extends PluginBase {
         registerEvents();
     }
 
-    public List<String> getBreakableBlocks() throws FileNotFoundException {
+    public static List<String> getBreakableBlocks() throws IOException {
         //////////Selecting blocks////////////
-
-        String[] breakableBlockss = new String[0];
-
-        FileReader fileReader = new FileReader("/home/thomas/nukkitServers/firstTesting/plugins/OreAndWoodRegenerData/OreAndWoodRegenerData.txt");
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
-
-        String breakableBlock = null;
-
-        List<String> breakableBlocks = Arrays.asList(breakableBlockss);
-
-        while (true) {
-            try {
-                if (!((breakableBlock = bufferedReader.readLine()) != null)) break;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            breakableBlocks.add(breakableBlock);
-        }
-        return breakableBlocks;
+        Path path = Paths.get("/home/thomas/nukkitServers/firstTesting/plugins/OreAndWoodRegenerData/OreAndWoodRegenerData.txt");
+        Stream<String> lines = Files.lines(path);
+        List<String> originalList = lines.collect(Collectors.toList());
+        return originalList;
     }
 
     private void registerCommands() {
