@@ -1,13 +1,12 @@
 package com.events;
 
+import cn.nukkit.Server;
 import cn.nukkit.block.Block;
-import cn.nukkit.block.BlockCobblestone;
-import cn.nukkit.block.BlockStone;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.BlockBreakEvent;
-import cn.nukkit.level.Level;
 import cn.nukkit.math.Vector3;
+import cn.nukkit.scheduler.Task;
 import cn.nukkit.utils.TextFormat;
 import com.command.SelectBlocks;
 import com.oreandtreesgen.Core;
@@ -21,6 +20,24 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class BlockBreak implements Listener {
+    public void backToStone(Vector3 locoOfBlockToReplace, BlockBreakEvent event){
+        Server.getInstance().getScheduler().scheduleDelayedTask(null, () -> {
+            event.getPlayer().getLevel().setBlock(locoOfBlockToReplace, Block.get(Block.STONE));
+        }, 100);
+
+    }
+    public void replacerStoneToCobblestone(Vector3 locoOfBlocksToReplace, BlockBreakEvent event){
+        Server.getInstance().getScheduler(). scheduleTask(null, () -> {
+            event.getPlayer().getLevel().setBlock(locoOfBlocksToReplace, Block.get(Block.COBBLESTONE));
+        });
+    }
+    public void replacerCobblestoneToBedrock(Vector3 locoOfBlocksToReplace, BlockBreakEvent event){
+        Server.getInstance().getScheduler(). scheduleTask(null, () -> {
+            event.getPlayer().getLevel().setBlock(locoOfBlocksToReplace, Block.get(Block.BEDROCK));
+        });
+        backToStone(locoOfBlocksToReplace, event);
+    }
+
     @EventHandler
     public void onBreak(BlockBreakEvent event) throws IOException {
         double locationOfBlockX = event.getBlock().getLocation().getX();
@@ -47,6 +64,7 @@ public class BlockBreak implements Listener {
                 fw.append("\n").append(locationOfBlock);  //Append the Content
                 fw.flush();
                 fw.close();
+                event.getPlayer().sendMessage(TextFormat.GREEN + "Block @ " + TextFormat.DARK_GREEN + locationOfBlock + TextFormat.GREEN + " was successfully added!");
             }
             event.setCancelled();
         }
@@ -70,9 +88,9 @@ public class BlockBreak implements Listener {
             }
             event.setCancelled();
         }
-//        if (event.getPlayer().hasPermission("group.admin")){
-//
-//            }
+        else if (SelectBlocks.runningCommand_oawrselector.get(event.getPlayer().getName()) == "bypass"){
+
+            }
         else if (Core.getBreakableBlocks().contains(locationOfBlock)) {
 //            if (SelectBlocks.runningCommand_oawrselector.get(event.getPlayer().getName()) == "add") {
 //                event.setCancelled();
@@ -82,8 +100,11 @@ public class BlockBreak implements Listener {
 //                }
             Vector3 locoOfBlockToReplace = event.getBlock().getLocation();
             if(event.getBlock().getId() == 1){
-                event.getPlayer().getLevel().setBlock(locoOfBlockToReplace, Block.get(Block.COBBLESTONE));
+                replacerStoneToCobblestone(locoOfBlockToReplace, event);
                 }
+            if(event.getBlock().getId() == 4){
+                replacerCobblestoneToBedrock(locoOfBlockToReplace, event);
+            }
             }
         else {
             event.setCancelled();

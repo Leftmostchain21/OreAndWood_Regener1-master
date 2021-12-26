@@ -26,10 +26,16 @@ public class SelectBlocks extends Command{
             commandSender.sendMessage("To stop this command, crouch!");
             runningCommand_oawrselector.put(commandSender.getName().toString(), "add");
             return false;
-        } if (strings[0].equals("remove")){
+        }
+        if (strings[0].equals("remove")){
             commandSender.sendMessage("To stop this command, crouch!");
             runningCommand_oawrselector.put(commandSender.getName().toString(), "remove");
-        } else {
+        }
+        if (strings[0].equals("bypass")) {
+            commandSender.sendMessage("To stop this command, crouch!");
+            runningCommand_oawrselector.put(commandSender.getName().toString(), "bypass");
+        }
+        else {
             commandSender.sendMessage(TextFormat.RED + "The parameter: " + TextFormat.DARK_RED + strings[0] + TextFormat.RED + " is not a valid argument!");
         }
     return false;

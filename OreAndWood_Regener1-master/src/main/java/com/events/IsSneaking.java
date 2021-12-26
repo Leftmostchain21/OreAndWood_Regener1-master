@@ -18,5 +18,9 @@ public class IsSneaking implements Listener {
             event.getPlayer().sendMessage(TextFormat.GOLD + "You have now disable you OAWR Selector!");
             SelectBlocks.runningCommand_oawrselector.put(event.getPlayer().getName(), "inactive");
         }
+        if (SelectBlocks.runningCommand_oawrselector.get(event.getPlayer().getName()) == "bypass") {
+            event.getPlayer().sendMessage(TextFormat.GOLD + "You have now disable you OAWR Selector!");
+            SelectBlocks.runningCommand_oawrselector.put(event.getPlayer().getName(), "inactive");
+        }
     }
 }
